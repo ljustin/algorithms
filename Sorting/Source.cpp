@@ -12,7 +12,7 @@ void printArr(int arr[], int length)
     cout << endl;
 }
 
-void swap(int& a, int &b)
+void swap(int& a, int& b)
 {
     int temp = a;
     a = b;
@@ -38,7 +38,7 @@ void selection_sort(int arr[], int length)
 
 /* 
     Repeatedly insert the element into the correct position in the
-    sorte portion of the array.
+    sorted portion of the array.
 */
 void insertion_sort(int arr[], int length)
 {
@@ -97,7 +97,7 @@ void merge(int leftArr[], int leftSize, int rightArr[], int rightSize, int desti
 
 /*
     Repeatedly divide the array into two sub-arrays -left and right until the sub-arrays get to size 1 
-    after which we start merging two sub-arrays until we finally merge into the original array.
+    after which we start merging two sub-arrays until we finally merge first two sub-arrays into the original array.
 */
 void merge_sort(int arr[], int length)
 {
@@ -123,6 +123,41 @@ void merge_sort(int arr[], int length)
     delete[] rightHalf;
 }
 
+int partition(int arr[], int low, int high)
+{
+    int pivotVal = arr[high];
+    int pivotIndex = low;
+
+    for (int i = low; i < high; i++)
+    {
+        // if element with value less or equal to pivot value is found, swap places with element in pivot index
+    
+        // if no such element is found, pivot index would be 'low' index which is correct.
+        // otherwise, we would have swapped and incremented the pivot index 
+        // by number of elements less or equal to pivot value
+        if (arr[i] <= pivotVal) swap(arr[i], arr[pivotIndex++]); 
+    }
+
+    // place pivotValue in correct index
+    swap(arr[pivotIndex], arr[high]);
+
+    return pivotIndex;
+}
+
+/*
+    Select a pivot in the array and partition the array such that elements less than or equal to
+    the pivot is located left of the pivot and elements greater than the pivot is located to the right of the pivot.
+*/
+void quick_sort(int arr[], int low, int high)
+{
+    if (low >= high) return;
+
+    int pivot = partition(arr, low, high);
+
+    quick_sort(arr, low, pivot-1);
+    quick_sort(arr, pivot+1, high);
+}
+
 int main(int argc, char** argv)
 {
     int arr1[5] = { 5, 4, 3, 2, 1 };
@@ -140,6 +175,10 @@ int main(int argc, char** argv)
     int arr4[5] = { 5, 4, 3, 2, 1 };
     merge_sort(arr4, 5);
     printArr(arr4, 5);
+
+    int arr5[5] = { 5, 4, 3, 2, 1 };
+    quick_sort(arr5, 0, 4);
+    printArr(arr5, 5);
 
     system("pause");
     return 0;
